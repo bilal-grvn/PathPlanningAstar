@@ -18,10 +18,10 @@ EXIT_STATUS_OK = 0
 class SafeGoTo:
 	def __init__(self):
 		rospy.init_node('traveler', anonymous=True)
-		self.vel_publisher = rospy.Publisher('/r1/cmd_vel', Twist, queue_size=10)
-		self.odom_subscriber = rospy.Subscriber('/r1/odom', Odometry, self.odom_callback)
-		self.laser_subscriber = rospy.Subscriber('/r1/kinect_laser/scan', LaserScan, self.laser_callback) 
-		self.sonar_subscriber = rospy.Subscriber('/r1/pseudosonar/scan', LaserScan, self.sonar_callback)	
+		self.vel_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+		self.odom_subscriber = rospy.Subscriber('/odom', Odometry, self.odom_callback)
+		self.laser_subscriber = rospy.Subscriber('/SP1_lidar', LaserScan, self.laser_callback)
+		#self.sonar_subscriber = rospy.Subscriber('/r1/pseudosonar/scan', LaserScan, self.sonar_callback)
 		# Hold position and quaternion of robot			
 		self.pos = Pose()
 		self.theta = 0
@@ -31,7 +31,7 @@ class SafeGoTo:
 		self.goal = None
 		self.mline = None
 		self.curr_line = None
-		self.sonar_data = []
+		#self.sonar_data = []
 		self.vel_msg = Twist()
 		self.rate = rospy.Rate(10)
 
@@ -59,15 +59,10 @@ class SafeGoTo:
 				self.stop()
 				print("Obstacle Detected!")
 				break
-
+	"""
 	def sonar_callback(self, sonar_data):
-		"""
-		Callback function for the sonar subscriber, which will continuously update the 
-		current status of sonar obstacle detection data
-		@arg 	sonar_data 	LaserScan object with a list "range" of range 0-682
-		"""
 		self.sonar_data = sonar_data.ranges
-		
+	"""
 
 	def slope(self, p1, p2):
 		"""
